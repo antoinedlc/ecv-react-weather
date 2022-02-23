@@ -1,0 +1,38 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: sans-serif;
+    overflow-x: hidden;
+    min-width: 100vw;
+    min-height: 100vh;
+    height: fit-content;
+    width: fit-content;
+    background: url('https://images.alphacoders.com/744/thumb-1920-744574.jpg') no-repeat center/cover;
+}
+
+*.glass {
+    background-color: rgb(255 255 255 / 30%);
+    backdrop-filter: blur(2rem);
+    -webkit-backdrop-filter: blur(2rem);
+    border-bottom: 0.1rem solid rgb(255 255 255 / 30%);
+}
+
+*.row {
+    margin: 16rem auto 0 auto;
+    max-width: 100rem;
+    min-width: 33%;
+    width: fit-content;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 3.6rem;
+    border-radius: 0.8rem;
+}

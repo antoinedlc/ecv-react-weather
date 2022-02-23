@@ -1,0 +1,88 @@
+@mixin translateY($params) {
+-webkit-transform: translateY($params);
+    -moz-transform: translateY($params);
+    -khtml-transform: translateY($params);
+        -o-transform: translateY($params);
+        transform: translateY($params);
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+    @content;
+    }
+    @-moz-keyframes #{$animationName} {
+    @content;
+    }
+    @-o-keyframes #{$animationName} {
+    @content;
+    }
+    @keyframes #{$animationName} {
+    @content;
+    }
+}
+
+@mixin animate($name, $duration, $iteration, $direction) {
+    -webkit-animation-duration: $duration;
+        -moz-animation-duration: $duration;
+        -o-animation-duration: $duration;
+            animation-duration: $duration;
+    -webkit-animation-iteration-count: $iteration;
+        -moz-animation-iteration-count: $iteration;
+        -o-animation-iteration-count: $iteration;
+            animation-iteration-count: $iteration;
+    -webkit-animation-name: $name;
+        -moz-animation-name: $name;
+        -o-animation-name: $name;
+            animation-name: $name;
+    -webkit-animation-direction: $direction;
+        -moz-animation-direction: $direction;
+        -o-animation-direction: $direction;
+            animation-direction: $direction;
+}
+
+@include keyframes(bounce) {
+    0%   { @include translateY(0); }
+    50%  { @include translateY(-1rem); }
+    100% { @include translateY(0); }
+}
+
+@mixin bounce {
+    @include animate(bounce, 5s, infinite, cubic-bezier(.53,.19,.52,.85));
+}
+
+.weather-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__city {
+        font-size: 2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3rem;
+        line-height: 1;
+    }
+
+    &__content {
+        font-size: 1.6rem;
+        letter-spacing: 0.2rem;
+        margin-top: 0.8rem;
+        color: #4c4a4a;
+    }
+
+    &__icon {
+        content: "";
+        display: block;
+        width: 8rem;
+        height: 8rem;
+        background: no-repeat center/contain;
+        margin-top: 1.6rem;
+        @include bounce;
+    }
+
+    &__temp {
+        font-size: 4rem;
+        font-weight: 100;
+        margin-top: 0.8rem;
+    }
+}
