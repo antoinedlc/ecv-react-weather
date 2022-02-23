@@ -1,6 +1,6 @@
 import './index.scss'
 
-export default function WeatherCard({ icon, content, city, temp }) {
+export default function WeatherCard({ icon, content, city, temp, add }) {
     if(icon, content, city, temp != null) {
         return (
             <div className="weather-card">

@@ -21,8 +21,6 @@ const weatherFactory = {
                 let newTime = new Date(hour.dt * 1000)
                 let time = newTime.toLocaleTimeString('fr-FR').slice(0, -3)
 
-                console.log(hour)
-
                 hourly.push({
                     time: time,
                     temp: Math.round(hour.temp - 273.15) + '°C',
