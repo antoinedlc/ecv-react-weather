@@ -3,7 +3,7 @@ const weatherFactory = {
         const current = {
             icon: `/images/${data.weather[0].icon}.png`,
             content: data.weather[0].description,
-            temp: Math.round(data.main.temp - 273.15),
+            temp: Math.round(data.main.temp - 273.15) + '°C',
             city: data.name
         }
     
@@ -21,9 +21,12 @@ const weatherFactory = {
                 let newTime = new Date(hour.dt * 1000)
                 let time = newTime.toLocaleTimeString('fr-FR').slice(0, -3)
 
+                console.log(hour)
+
                 hourly.push({
                     time: time,
-                    temp: Math.round(hour.temp - 273.15)
+                    temp: Math.round(hour.temp - 273.15) + '°C',
+                    content: hour.weather[0].description
                 })
 
                 i ++
@@ -31,6 +34,21 @@ const weatherFactory = {
         })
     
         return hourly
+    },
+
+    async getCity(data) {
+        if(data === 'No results found') {
+            return ['No results found']
+        } else {
+            let city = {
+                icon: `/images/${data.weather[0].icon}.png`,
+                content: data.weather[0].description,
+                temp: Math.round(data.main.temp) + '°C',
+                city: data.name
+            }
+
+            return city
+        }
     }
 }
 

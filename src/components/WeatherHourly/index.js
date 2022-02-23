@@ -25,7 +25,8 @@ export default class WeatherHourly extends Component {
                         return (
                             <div className="weather-hourly__hour">
                                 <span className="weather-hourly__hour__time">{hour.time}</span>
-                                <span className="weather-hourly__hour__temp">{hour.temp}°C</span>
+                                <span className="weather-hourly__hour__temp">{hour.temp}</span>
+                                <span className="weather-hourly__hour__content">{hour.content}</span>
                             </div>
                         )
                     })

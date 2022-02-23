@@ -12,5 +12,11 @@ export default {
         const hourlyData = await weatherRepository.getHourly(lat, long)
         const hourly = await weatherFactory.getHourly(hourlyData)
         return hourly
+    },
+
+    async getCity(name) {
+        const citiesData = await weatherRepository.getCity(name)
+        const cities = await weatherFactory.getCity(citiesData)
+        return cities
     }
 }

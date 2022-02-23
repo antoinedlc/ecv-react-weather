@@ -38,7 +38,14 @@
         }
 
         &__temp {
-            font-size: 1.8rem;
+            font-size: 2rem;
+        }
+
+        &__content {
+            font-size: 1rem;
+            color: #4c4a4abb;
+            font-style: italic;
+            font-weight: 300;
         }
     }
 }

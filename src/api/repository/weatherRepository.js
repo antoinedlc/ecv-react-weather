@@ -17,6 +17,15 @@ const weatherRepository = {
         } catch(error) {
             console.log('error : ' + error)
         }
+    },
+
+    async getCity(name) {
+        try {
+            const city = await axios.get(`${process.env.REACT_APP_API_BASE_URL_WEATHER}q=${name}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+            return city.data
+        } catch(error) {
+            return 'No results found'
+        }
     }
 }
 

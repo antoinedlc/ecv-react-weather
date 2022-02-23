@@ -42,7 +42,7 @@
 
 @include keyframes(bounce) {
     0%   { @include translateY(0); }
-    50%  { @include translateY(-1rem); }
+    50%  { @include translateY(-0.6rem); }
     100% { @include translateY(0); }
 }
 

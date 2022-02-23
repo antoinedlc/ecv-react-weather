@@ -1,5 +1,9 @@
+import SearchForm from '../components/SearchForm'
+
 export default function Search() {
     return (
-        <h2>Search</h2>
+        <div className="row glass">
+            <SearchForm />
+        </div>
     )
 }
