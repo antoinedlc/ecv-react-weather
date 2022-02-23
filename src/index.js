@@ -9,6 +9,7 @@ import Nav from './components/Nav'
 
 import Home from './views/Home'
 import Search from './views/Search'
+import Saved from './views/Saved'
 
 const rootElement = document.getElementById('root')
 ReactDOM.render(
@@ -19,6 +20,7 @@ ReactDOM.render(
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/search" element={<Search />} />
+                    <Route path="/saved" element={<Saved />} />
                 </Routes>
             </Provider>
         </BrowserRouter>

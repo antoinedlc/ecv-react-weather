@@ -11,8 +11,6 @@ export default function WeatherCard({ icon, content, city, temp, add }) {
             </div>
         )
     } else {
-        return (
-            <></>
-        )
+        return null
     }
 }
