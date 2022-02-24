@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import mapboxgl from 'mapbox-gl'
-import { connect } from 'react-redux'
 import weatherService from '../../services/weatherService'
-import { addMarker } from '../../store/reducers/mapReducer'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWRlbGNvdXJ0ZSIsImEiOiJja3p6b2lnMWUwY2JsM2p0MWZhanA5bG92In0.j0o6KPACQHPftGdZhKDHqg'
 
-class Map extends Component {
+export default class Map extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            markers: [],
             mainMarker: {
                 lng: -70.9,
                 lat: 42.35
@@ -94,7 +91,6 @@ class Map extends Component {
             city: current.city ? current.city : '[...]'
         })
         console.log(marker)
-        await this.props.addMarker(marker)
     }
 
     async createMarker({lng, lat, city}) {
@@ -116,17 +112,3 @@ class Map extends Component {
         )
     }
 }
-
-const mapDispatchToProps = dispatch => {
-    return {
-        addmarker: (marker) => dispatch(addMarker(marker))
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        markers: state.map.markers
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Map)
