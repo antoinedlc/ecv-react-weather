@@ -7,6 +7,7 @@ export default function Nav() {
             <Link to="/" className="nav__link">Home</Link>
             <Link to="/search" className="nav__link">Search</Link>
             <Link to="/saved" className="nav__link">Saved</Link>
+            <Link to="/map" className="nav__link">Map</Link>
         </nav>
     )
 }

@@ -1,13 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react'
-import mapboxgl from 'mapbox-gl'
+import Map from '../components/Map'
 
-export default function Home() {
+export default function MapPage() {
     return (
-        <div className="row glass">
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
-                <Current />
-                <WeatherHourly />
-            </div>
+        <div className="row" style={{marginTop: '8rem'}}>
+            <Map />
         </div>
     )
 }
