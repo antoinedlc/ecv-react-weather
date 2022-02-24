@@ -1,89 +1,113 @@
 import React, { Component } from 'react'
 import mapboxgl from 'mapbox-gl'
+import { connect } from 'react-redux'
 import weatherService from '../../services/weatherService'
+import { addMarker } from '../../store/reducers/mapReducer'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWRlbGNvdXJ0ZSIsImEiOiJja3p6b2lnMWUwY2JsM2p0MWZhanA5bG92In0.j0o6KPACQHPftGdZhKDHqg'
 
-export default class Map extends Component {
+class Map extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            lng: -70.9,
-            lat: 42.35,
+            markers: [],
+            mainMarker: {
+                lng: -70.9,
+                lat: 42.35
+            },
             zoom: 9,
-            geojson: {
-                type: 'FeatureCollection',
-                features: [
-                    {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [-70.9, 42.35]
-                        },
-                        properties: {
-                            title: "Test popup"
-                        }
-                    }
-                ]
-            }
+            geojson: {}
         }
         this.mapContainer = React.createRef()
     }
 
     componentDidMount() {
-        const { lng, lat, zoom } = this.state
         const map = new mapboxgl.Map({
             container: this.mapContainer.current,
             style: 'mapbox://styles/mapbox/light-v10',
-            center: [lng, lat],
-            zoom: zoom
+            center: [this.state.mainMarker.lng, this.state.mainMarker.lat],
+            zoom: this.state.zoom
         })
 
-        for (const feature of this.state.geojson.features) {
-            const el = document.createElement('div')
-            el.className = 'marker'
-            el.id = 'marker-main'
-            new mapboxgl.Marker(el)
-                .setLngLat(feature.geometry.coordinates)
-                .setPopup(
-                  new mapboxgl.Popup({ offset: 25 })
-                    .setHTML(
-                      `<h3>${feature.properties.title}</h3>`
+        this.setState({geojson: {
+            type: 'FeatureCollection',
+            features: this.state.markers
+        }})
+
+        if(this.state.geojson.feature != null) {
+            for (const feature of this.state.geojson.features) {
+                const el = document.createElement('div')
+                el.className = 'marker'
+                el.id = 'marker-main'
+                new mapboxgl.Marker(el)
+                    .setLngLat(feature.geometry.coordinates)
+                    .setPopup(
+                      new mapboxgl.Popup({ offset: 25 })
+                        .setHTML(
+                          `<h3>${feature.properties.title}</h3>`
+                        )
                     )
-                )
-                .addTo(map);
+                    .addTo(map);
+            }
         }
 
 
         map.on('click', async (e) => {
             const {lng, lat} = e.lngLat.wrap()
-            const current = await weatherService.getCurrent(lng, lat)
-            const el = document.createElement('div')
-            el.className = 'marker'
-            new mapboxgl.Marker(el)
-                .setLngLat({lng: lng, lat: lat})
-                .setPopup(
-                  new mapboxgl.Popup({ offset: 25 })
-                    .setHTML(
-                      `<h3>${current.city}</h3>`
-                    )
-                )
-                .addTo(map);
+            this.handleClick(map, lng, lat)
+            // const current = await weatherService.getCurrent(lng, lat)
+            // const el = document.createElement('div')
+            // el.className = 'marker'
+            // new mapboxgl.Marker(el)
+            //     .setLngLat({lng: lng, lat: lat})
+            //     .setPopup(
+            //       new mapboxgl.Popup({ offset: 25 })
+            //         .setHTML(
+            //           `<h3>${current.city}</h3>`
+            //         )
+            //     )
+            //     .addTo(map);
+            // this.props.addMarker(this.state.markers)
         });
     }
 
-    async createMarker({map, lng, lat, current}) {
-        const el = document.createElement('div')
-        el.className = 'marker'
-        new mapboxgl.Marker(el)
-            .setLngLat({lng: lng, lat: lat})
-            .setPopup(
-              new mapboxgl.Popup({ offset: 25 })
-                .setHTML(
-                  `<h3>${current.city}</h3>`
-                )
-            )
-            .addTo(map);
+    // async createMarker({map, lng, lat, current}) {
+    //     const el = document.createElement('div')
+    //     el.className = 'marker'
+    //     new mapboxgl.Marker(el)
+    //         .setLngLat({lng: lng, lat: lat})
+    //         .setPopup(
+    //           new mapboxgl.Popup({ offset: 25 })
+    //             .setHTML(
+    //               `<h3>${current.city}</h3>`
+    //             )
+    //         )
+    //         .addTo(map);
+    // }
+
+    async handleClick(map, lng, lat) {
+        console.log(lng, lat)
+        const current = await weatherService.getCurrent(lng, lat)
+        const marker = await this.createMarker({
+            lng,
+            lat,
+            city: current.city ? current.city : '[...]'
+        })
+        console.log(marker)
+        await this.props.addMarker(marker)
+    }
+
+    async createMarker({lng, lat, city}) {
+        return {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [lng, lat]
+            },
+            properties: {
+                title: city
+            }
+        }
     }
 
     render() {
@@ -92,3 +116,17 @@ export default class Map extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addmarker: (marker) => dispatch(addMarker(marker))
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        markers: state.map.markers
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map)
