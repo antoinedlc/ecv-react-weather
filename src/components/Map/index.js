@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import mapboxgl from 'mapbox-gl'
 import weatherService from '../../services/weatherService'
 
+import './index.scss'
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWRlbGNvdXJ0ZSIsImEiOiJja3p6b2lnMWUwY2JsM2p0MWZhanA5bG92In0.j0o6KPACQHPftGdZhKDHqg'
 
 export default class Map extends Component {
@@ -72,10 +74,13 @@ export default class Map extends Component {
     async handleClick(map, lng, lat) {
         console.log(lng, lat)
         const current = await weatherService.getCurrent(lng, lat)
+        console.log(current)
         await this.createMarker(map, {
             lng,
             lat,
-            city: current.city ? current.city : '[...]'
+            city: current.city ? current.city : '[...]',
+            content: current.content,
+            temp: current.temp
         })
     }
 
@@ -88,7 +93,11 @@ export default class Map extends Component {
             .setPopup(
               new mapboxgl.Popup({ offset: 25 })
                 .setHTML(
-                  `<h3>${marker.city ? marker.city : '[...]'}</h3>`
+                    `
+                        <h3>${marker.city ? marker.city : '[...]'}</h3>
+                        <p>${marker.content}</p>
+                        <h2>${marker.temp}</h2>
+                    `
                 )
             )
             .addTo(map);
