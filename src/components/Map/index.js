@@ -13,7 +13,21 @@ export default class Map extends Component {
                 lat: 42.35
             },
             zoom: 9,
-            geojson: {}
+            geojson: {
+                type: 'FeatureCollection',
+                features: [
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [-70.9, 42.35]
+                        },
+                        properties: {
+                            title: 'TEST'
+                        }
+                    }
+                ]
+            }
         }
         this.mapContainer = React.createRef()
     }
@@ -31,7 +45,7 @@ export default class Map extends Component {
             features: this.state.markers
         }})
 
-        if(this.state.geojson.feature != null) {
+        if(this.state.geojson.features != null) {
             for (const feature of this.state.geojson.features) {
                 const el = document.createElement('div')
                 el.className = 'marker'
@@ -52,58 +66,32 @@ export default class Map extends Component {
         map.on('click', async (e) => {
             const {lng, lat} = e.lngLat.wrap()
             this.handleClick(map, lng, lat)
-            // const current = await weatherService.getCurrent(lng, lat)
-            // const el = document.createElement('div')
-            // el.className = 'marker'
-            // new mapboxgl.Marker(el)
-            //     .setLngLat({lng: lng, lat: lat})
-            //     .setPopup(
-            //       new mapboxgl.Popup({ offset: 25 })
-            //         .setHTML(
-            //           `<h3>${current.city}</h3>`
-            //         )
-            //     )
-            //     .addTo(map);
-            // this.props.addMarker(this.state.markers)
         });
     }
-
-    // async createMarker({map, lng, lat, current}) {
-    //     const el = document.createElement('div')
-    //     el.className = 'marker'
-    //     new mapboxgl.Marker(el)
-    //         .setLngLat({lng: lng, lat: lat})
-    //         .setPopup(
-    //           new mapboxgl.Popup({ offset: 25 })
-    //             .setHTML(
-    //               `<h3>${current.city}</h3>`
-    //             )
-    //         )
-    //         .addTo(map);
-    // }
 
     async handleClick(map, lng, lat) {
         console.log(lng, lat)
         const current = await weatherService.getCurrent(lng, lat)
-        const marker = await this.createMarker({
+        await this.createMarker(map, {
             lng,
             lat,
             city: current.city ? current.city : '[...]'
         })
-        console.log(marker)
     }
 
-    async createMarker({lng, lat, city}) {
-        return {
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: [lng, lat]
-            },
-            properties: {
-                title: city
-            }
-        }
+    async createMarker(map, marker) {
+        const el = document.createElement('div')
+        el.className = 'marker'
+
+        new mapboxgl.Marker(el)
+            .setLngLat({lng: marker.lng, lat: marker.lat})
+            .setPopup(
+              new mapboxgl.Popup({ offset: 25 })
+                .setHTML(
+                  `<h3>${marker.city ? marker.city : '[...]'}</h3>`
+                )
+            )
+            .addTo(map);
     }
 
     render() {
