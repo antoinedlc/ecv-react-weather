@@ -5,15 +5,13 @@ body, html {
 
 html {
     font-size: 62.5%;
-    min-width: 100vw;
-    min-height: 100vh;
 }
 
 body {
     font-size: 1.6rem;
     font-family: sans-serif;
     overflow-x: hidden;
-    min-width: 100vw;
+    width: 100%;
     min-height: 100vh;
     background: url('https://images.alphacoders.com/744/thumb-1920-744574.jpg') no-repeat center/cover;
 }

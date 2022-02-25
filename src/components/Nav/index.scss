@@ -1,6 +1,7 @@
 .nav {
     background-color: rgb(255 255 255 / 30%);
-    padding: 1.6rem 2.4rem;
+    padding: 0 6.4rem;
+    box-sizing: border-box;
     width: 100vw;
     position: fixed;
     top: 0;
@@ -12,8 +13,21 @@
     -webkit-backdrop-filter: blur(2rem);
     font-size: 1.6rem;
     font-weight: 500;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 0.1rem solid rgb(255 255 255 / 30%);
+
+    &__logo {
+        content: "";
+        width: 6.4rem;
+        height: 6.4rem;
+        background: url('../../../public/images/logo.png') no-repeat center/contain;
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+    }
     
     &__link {
         margin: 0 1.6rem;
